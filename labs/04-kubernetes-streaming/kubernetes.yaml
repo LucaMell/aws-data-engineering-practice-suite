@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kcl-worker
+  annotations: {eks.amazonaws.com/role-arn: REPLACE_ROLE_ARN}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: kcl-worker}
+spec:
+  replicas: 2
+  selector: {matchLabels: {app: kcl-worker}}
+  template:
+    metadata: {labels: {app: kcl-worker}}
+    spec:
+      serviceAccountName: kcl-worker
+      containers:
+        - name: worker
+          image: REPLACE_ECR_IMAGE
+          envFrom: [{configMapRef: {name: kcl-worker}}]
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: kcl-worker}
+data:
+  BUCKET: REPLACE_BUCKET
+  QUEUE_URL: REPLACE_QUEUE_URL
+  TOPIC_ARN: REPLACE_TOPIC_ARN
+

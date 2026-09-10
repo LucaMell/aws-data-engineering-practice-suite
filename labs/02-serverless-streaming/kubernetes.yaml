@@ -1,0 +1,14 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: stream-worker}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: stream-worker}}
+  template:
+    metadata: {labels: {app: stream-worker}}
+    spec:
+      serviceAccountName: stream-worker
+      containers:
+        - name: worker
+          image: REPLACE_WITH_ECR_WORKER_IMAGE
+

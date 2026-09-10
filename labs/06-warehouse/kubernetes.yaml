@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata: {name: dbt-redshift}
+spec:
+  schedule: "0 4 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: dbt
+              image: REPLACE_ECR_IMAGE
+              envFrom: [{secretRef: {name: redshift-credentials}}]
+

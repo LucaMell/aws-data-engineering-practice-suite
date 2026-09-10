@@ -1,0 +1,12 @@
+services:
+  jobmanager:
+    build: .
+    command: standalone-job --job-classname practice.RealtimeJob
+    ports: ["8081:8081"]
+    environment: ["JOB_MANAGER_RPC_ADDRESS=jobmanager", "STREAM_NAME=realtime-events-practice", "AWS_REGION=eu-west-1"]
+  taskmanager:
+    build: .
+    command: taskmanager
+    depends_on: [jobmanager]
+    environment: ["JOB_MANAGER_RPC_ADDRESS=jobmanager"]
+

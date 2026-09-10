@@ -1,0 +1,24 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnect
+metadata:
+  name: cdc-connect
+  annotations: {strimzi.io/use-connector-resources: "true"}
+spec:
+  replicas: 1
+  bootstrapServers: practice-kafka-bootstrap:9092
+  image: REPLACE_WITH_DEBEZIUM_CONNECT_IMAGE
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata: {name: customers-cdc}
+spec:
+  class: io.debezium.connector.postgresql.PostgresConnector
+  tasksMax: 1
+  config:
+    database.hostname: REPLACE_RDS_HOST
+    database.user: ${secrets:cdc/postgres:username}
+    database.password: ${secrets:cdc/postgres:password}
+    database.dbname: bookings
+    topic.prefix: practice
+    table.include.list: public.customers
+

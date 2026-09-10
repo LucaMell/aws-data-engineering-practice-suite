@@ -1,0 +1,4 @@
+order_id,customer_id,order_date,amount
+o-1,c-1,2026-09-09,2450.00
+o-2,c-1,2026-09-10,100.00
+

@@ -1,0 +1,5 @@
+name: warehouse_practice
+version: 1.0.0
+profile: warehouse_practice
+model-paths: [models]
+

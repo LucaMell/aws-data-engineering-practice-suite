@@ -1,0 +1,14 @@
+apiVersion: flink.apache.org/v1beta1
+kind: FlinkDeployment
+metadata: {name: realtime-analytics}
+spec:
+  image: REPLACE_ECR_IMAGE
+  flinkVersion: v1_18
+  serviceAccount: flink
+  jobManager: {resource: {memory: "1024m", cpu: 1}}
+  taskManager: {resource: {memory: "2048m", cpu: 1}}
+  job:
+    jarURI: local:///opt/flink/usrlib/job.jar
+    parallelism: 2
+    upgradeMode: savepoint
+

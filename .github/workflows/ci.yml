@@ -1,0 +1,33 @@
+name: Validate suite
+on: [push, pull_request]
+permissions: {contents: read}
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install -e .
+      - run: pytest -q
+      - run: python -m compileall -q labs
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - run: terraform fmt -check -recursive labs
+      - run: |
+          for directory in labs/*/terraform; do
+            terraform -chdir="$directory" init -backend=false
+            terraform -chdir="$directory" validate
+          done
+  docker:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        lab: [01-batch-lake, 02-serverless-streaming, 03-container-streaming, 04-kubernetes-streaming, 05-cdc, 06-warehouse, 07-realtime-analytics]
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t "${{ matrix.lab }}:test" "labs/${{ matrix.lab }}"
+

@@ -1,0 +1,11 @@
+version: 2
+sources:
+  - name: raw
+    schema: raw
+    tables: [{name: orders}]
+models:
+  - name: customer_revenue
+    columns:
+      - name: customer_id
+        tests: [not_null, unique]
+

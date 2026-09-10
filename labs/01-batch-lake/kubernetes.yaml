@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata: {name: batch-lake}
+spec:
+  schedule: "0 3 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          serviceAccountName: batch-lake
+          containers:
+            - name: job
+              image: REPLACE_WITH_ECR_IMAGE
+              args: ["--input", "/data/orders.csv", "--output", "/data/orders.parquet"]
+

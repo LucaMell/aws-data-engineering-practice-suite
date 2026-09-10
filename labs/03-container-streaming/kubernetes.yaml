@@ -1,0 +1,15 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: ecs-equivalent-worker}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: ecs-equivalent-worker}}
+  template:
+    metadata: {labels: {app: ecs-equivalent-worker}}
+    spec:
+      serviceAccountName: data-worker
+      containers:
+        - name: worker
+          image: REPLACE_WITH_ECR_IMAGE
+          envFrom: [{configMapRef: {name: data-worker}}]
+

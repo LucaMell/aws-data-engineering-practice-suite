@@ -1,0 +1,5 @@
+order_id,customer_id,email,order_date,amount
+o-1,c-1,Luca@Example.com,2026-09-09,2450.00
+o-2,c-2,anna@example.com,2026-09-09,780.50
+o-2,c-2,anna@example.com,2026-09-09,780.50
+

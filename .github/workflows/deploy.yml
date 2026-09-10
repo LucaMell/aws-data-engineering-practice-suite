@@ -1,0 +1,33 @@
+name: Deploy selected lab
+on:
+  workflow_dispatch:
+    inputs:
+      lab:
+        type: choice
+        options: [01-batch-lake, 02-serverless-streaming, 03-container-streaming, 04-kubernetes-streaming, 05-cdc, 06-warehouse, 07-realtime-analytics]
+      environment:
+        type: choice
+        options: [dev, production]
+permissions: {contents: read, id-token: write}
+jobs:
+  deploy:
+    environment: ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: eu-west-1
+      - uses: hashicorp/setup-terraform@v3
+      - name: Write environment variables
+        env:
+          TFVARS: ${{ secrets.TERRAFORM_TFVARS }}
+        run: test -z "$TFVARS" || printf '%s' "$TFVARS" > terraform.auto.tfvars
+        working-directory: labs/${{ inputs.lab }}/terraform
+      - run: terraform init
+        working-directory: labs/${{ inputs.lab }}/terraform
+      - run: terraform plan -out=tfplan
+        working-directory: labs/${{ inputs.lab }}/terraform
+      - run: terraform apply tfplan
+        working-directory: labs/${{ inputs.lab }}/terraform
