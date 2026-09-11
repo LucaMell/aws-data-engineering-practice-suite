@@ -9,3 +9,13 @@ dist/
 
 # Generated lab outputs
 **/output/
+# Terraform generated files
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+**/handler.zip
+
+# Python generated files
+**/__pycache__/
+**/.pytest_cache/
