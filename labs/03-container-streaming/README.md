@@ -99,3 +99,44 @@ terraform -chdir=labs/03-container-streaming/terraform validate
 
 The Kubernetes manifest shows how the same image could run on EKS, but it is
 illustrative and is not a complete deployment.
+
+## Optional short AWS SQS/Fargate demo
+
+The original Kinesis Terraform remains the reference architecture. On an AWS
+Free-plan account, Kinesis can return `SubscriptionRequiredException`.
+
+`terraform-sqs-fargate-demo` is a separate, explicitly optional adaptation:
+
+```text
+SQS -> ECS Fargate worker -> S3
+                         \-> quarantine SQS
+                         \-> SNS -> alert-capture SQS
+```
+
+The worker selects this path with `INPUT_MODE=sqs`.
+
+The demo configuration defaults to `desired_count = 0`. This allows its
+supporting resources and ECR repository to be prepared before any Fargate
+compute starts. Set `desired_count = 1` only for a short, supervised test after
+the Docker image has been pushed with the tag `lab3`.
+
+This AWS path was verified with:
+
+- one running Fargate task using 0.25 vCPU and 0.5 GB memory
+- one valid SQS event written to S3
+- one invalid event written to quarantine SQS
+- the invalid-event SNS notification delivered to alert-capture SQS
+
+Fargate, public IPv4, ECR storage, logs, and related requests can consume
+credits or create charges. Always destroy the demo immediately after testing:
+
+```bash
+AWS_PROFILE=data-lab-dev \
+terraform \
+  -chdir=labs/03-container-streaming/terraform-sqs-fargate-demo \
+  destroy \
+  -var='desired_count=1'
+```
+
+After destruction, confirm that `terraform state list` is empty and that
+`aws ecs list-tasks` returns no task ARNs.

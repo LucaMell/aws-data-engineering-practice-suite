@@ -32,11 +32,19 @@ class FakeS3:
 
 
 class FakeSQS:
-    def __init__(self):
+    def __init__(self, input_messages=None):
         self.messages = []
+        self.input_messages = input_messages or []
+        self.deleted_messages = []
 
     def send_message(self, **kwargs):
         self.messages.append(kwargs)
+
+    def receive_message(self, **kwargs):
+        return {"Messages": self.input_messages}
+
+    def delete_message(self, **kwargs):
+        self.deleted_messages.append(kwargs)
 
 
 class FakeSNS:
@@ -59,8 +67,8 @@ def configure_environment(monkeypatch):
     )
 
 
-def make_record(payload):
-    return {"Data": json.dumps(payload).encode("utf-8")}
+def make_data(payload):
+    return json.dumps(payload).encode("utf-8")
 
 
 def test_sample_event_id():
@@ -74,8 +82,8 @@ def test_valid_record_is_written_to_s3(monkeypatch):
     fake_sqs = FakeSQS()
     fake_sns = FakeSNS()
 
-    result = worker.process_record(
-        make_record(
+    result = worker.process_data(
+        make_data(
             {
                 "event_id": "ecs-1",
                 "customer_id": "customer-1",
@@ -107,8 +115,8 @@ def test_invalid_record_is_sent_to_sqs_and_sns(monkeypatch):
     fake_sqs = FakeSQS()
     fake_sns = FakeSNS()
 
-    result = worker.process_record(
-        make_record(
+    result = worker.process_data(
+        make_data(
             {
                 "event_id": "ecs-2",
                 "customer_id": "customer-2",
@@ -127,3 +135,44 @@ def test_invalid_record_is_sent_to_sqs_and_sns(monkeypatch):
     assert len(fake_sns.messages) == 1
     assert fake_sqs.messages[0]["MessageBody"] == "invalid email"
     assert fake_sns.messages[0]["Message"] == "invalid email"
+
+
+def test_sqs_message_is_processed_and_deleted(monkeypatch):
+    configure_environment(monkeypatch)
+    fake_s3 = FakeS3()
+    fake_sns = FakeSNS()
+    fake_sqs = FakeSQS(
+        input_messages=[
+            {
+                "MessageId": "message-1",
+                "ReceiptHandle": "receipt-1",
+                "Body": json.dumps(
+                    {
+                        "event_id": "ecs-sqs-1",
+                        "customer_id": "customer-3",
+                        "email": " SQS@Example.com ",
+                        "amount": 50,
+                    }
+                ),
+            }
+        ]
+    )
+
+    processed = worker.poll_sqs_once(
+        "https://example.com/test-input",
+        fake_s3,
+        fake_sqs,
+        fake_sns,
+    )
+
+    assert processed == 1
+    assert len(fake_s3.objects) == 1
+    assert json.loads(
+        fake_s3.objects[0]["Body"]
+    )["email"] == "sqs@example.com"
+    assert fake_sqs.deleted_messages == [
+        {
+            "QueueUrl": "https://example.com/test-input",
+            "ReceiptHandle": "receipt-1",
+        }
+    ]
