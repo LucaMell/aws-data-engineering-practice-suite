@@ -10,15 +10,16 @@ jobs:
         with: {python-version: "3.12"}
       - run: pip install -e .
       - run: pytest -q
-      - run: python -m compileall -q labs
+      - run: python -m compileall -q labs partner-data-engineering-labs
   terraform:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: hashicorp/setup-terraform@v3
-      - run: terraform fmt -check -recursive labs
+      - run: terraform fmt -check -recursive labs partner-data-engineering-labs
       - run: |
-          for directory in labs/*/terraform; do
+          for directory in labs/*/terraform partner-data-engineering-labs/*/terraform; do
+            test -d "$directory" || continue
             terraform -chdir="$directory" init -backend=false
             terraform -chdir="$directory" validate
           done

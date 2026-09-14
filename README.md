@@ -1,5 +1,12 @@
 # AWS Data Engineering Practice Suite
 
+## Partner data engineering lab series
+
+This repository also contains a separate practical series focused on partner-data onboarding, ingestion, transformation, validation, orchestration, security, and operational delivery.
+
+Start with [Partner Data Engineering Lab Series](partner-data-engineering-labs/README.md). Its 18 labs cover file feeds, APIs, CDC, streaming, S3, Athena, Glue, SQL platforms, Airflow, Prefect, data quality, documentation, IAM, and AI-assisted engineering.
+
+
 Seven isolated labs, ordered from simplest to most operationally demanding:
 
 1. `01-batch-lake`: S3 → Glue/Spark → Athena
