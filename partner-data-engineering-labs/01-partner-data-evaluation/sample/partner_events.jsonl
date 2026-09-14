@@ -1,0 +1,13 @@
+{"event_id":"e-2001","customer_id":"c-1001","event_type":"page_view","event_timestamp":"2026-08-12T08:00:00Z","amount":null,"source":"web"}
+{"event_id":"e-2002","customer_id":"c-1001","event_type":"purchase","event_timestamp":"2026-08-12T08:15:00Z","amount":49.95,"source":"web"}
+{"event_id":"e-2003","customer_id":"c-1002","event_type":"email_click","event_timestamp":"2026-08-12T09:00:00Z","amount":null,"source":"email"}
+{"event_id":"e-2004","customer_id":"c-1003","event_type":"purchase","event_timestamp":"2026-08-12T09:30:00Z","amount":0.0,"source":"store"}
+{"event_id":"e-2005","customer_id":"c-9999","event_type":"page_view","event_timestamp":"2026-08-12T10:00:00Z","amount":null,"source":"web"}
+{"event_id":"e-2002","customer_id":"c-1002","event_type":"purchase","event_timestamp":"2026-08-12T10:30:00Z","amount":25.0,"source":"web"}
+{"customer_id":"c-1004","event_type":"email_open","event_timestamp":"2026-08-12T11:00:00Z","amount":null,"source":"email"}
+{"event_id":"e-2008","customer_id":"c-1004","event_type":"page_view","event_timestamp":"not-a-timestamp","amount":null,"source":"web"}
+{"event_id":"e-2009","customer_id":"c-1005","event_type":"mystery_action","event_timestamp":"2026-08-12T12:00:00Z","amount":null,"source":"unknown"}
+{"event_id":"e-2010","customer_id":"c-1006","event_type":"purchase","event_timestamp":"2026-08-12T12:30:00Z","amount":"not-a-number","source":"web"}
+{"event_id":"e-2011","customer_id":"","event_type":"page_view","event_timestamp":"2026-08-12T13:00:00Z","amount":null,"source":"web"}
+{"event_id":"e-2012","customer_id":"c-1004","event_type":"email_open","event_timestamp":"2026-08-12T13:30:00Z","amount":null,"source":"email"}
+{"event_id":"e-2013","customer_id":"c-1007","event_type":"page_view","event_timestamp":"2026-08-12T14:00:00Z","amount":null,"source":"web"

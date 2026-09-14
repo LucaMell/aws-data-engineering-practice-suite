@@ -1,0 +1,13 @@
+customer_id,email,first_name,last_name,country_code,signup_timestamp,status,marketing_consent,lifetime_value
+c-1001,Alice.One@Example.com,Alice,One,DK,2026-08-01T09:15:00Z,active,true,125.50
+c-1002,bob.two@example.com,Bob,Two,SE,2026-08-02T10:30:00Z,active,false,88.00
+c-1003,carla.three@example.com,Carla,Three,NO,2026-08-03T11:45:00Z,inactive,true,0.00
+c-1004," dana.four@example.com ",Dana,Four,DE,2026-08-04T12:00:00Z,active,true,240.75
+c-1005,invalid-email,Evan,Five,DK,2026-08-05T13:10:00Z,active,true,15.00
+c-1006,farah.six@example.com,Farah,Six,GB,not-a-timestamp,active,false,51.25
+c-1007,gina.seven@example.com,Gina,Seven,XX,2026-08-07T15:30:00Z,pending,true,19.99
+c-1008,hugo.eight@example.com,Hugo,Eight,FR,2026-08-08T16:40:00Z,active,maybe,75.00
+c-1009,,Iris,Nine,NL,2026-08-09T17:50:00Z,active,true,32.10
+,c-no-id@example.com,Jamie,NoId,DK,2026-08-10T18:00:00Z,active,true,44.00
+c-1002,bob.duplicate@example.com,Bob,Duplicate,SE,2026-08-11T19:15:00Z,active,false,91.00
+c-1010,kim.ten@example.com,Kim,Ten,IT,2026-08-12T20:20:00Z,active,true,-5.00

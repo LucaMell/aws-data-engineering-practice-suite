@@ -32,3 +32,17 @@ jobs:
       - uses: actions/checkout@v4
       - run: docker build -t "${{ matrix.lab }}:test" "labs/${{ matrix.lab }}"
 
+
+  partner-docker:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        lab:
+          - 01-partner-data-evaluation
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build partner-data lab image
+        run: |
+          docker build \
+            --tag "${{ matrix.lab }}:test" \
+            "partner-data-engineering-labs/${{ matrix.lab }}"
