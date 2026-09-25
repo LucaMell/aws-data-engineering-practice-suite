@@ -1,0 +1,4 @@
+customer_id,email,country,consent,updated_at
+CUST004,not-an-email,DK,true,2026-09-25T09:00:00Z
+,dan@example.com,SE,true,2026-09-25T09:01:00Z
+CUST006,emma@example.com,NO,maybe,not-a-timestamp

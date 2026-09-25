@@ -1,0 +1,38 @@
+{
+  "dataset": "customers",
+  "format": "csv",
+  "filename_pattern": "^customers_[0-9]{8}_batch[0-9]{3}\\.csv$",
+  "required_columns": [
+    "customer_id",
+    "email",
+    "country",
+    "consent",
+    "updated_at"
+  ],
+  "columns": {
+    "customer_id": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "country": {
+      "type": "string",
+      "required": true
+    },
+    "consent": {
+      "type": "boolean",
+      "required": true,
+      "allowed_values": [
+        "true",
+        "false"
+      ]
+    },
+    "updated_at": {
+      "type": "timestamp",
+      "required": true
+    }
+  }
+}

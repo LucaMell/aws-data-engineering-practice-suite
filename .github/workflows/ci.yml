@@ -39,6 +39,7 @@ jobs:
       matrix:
         lab:
           - 01-partner-data-evaluation
+          - 02-secure-s3-file-ingestion
     steps:
       - uses: actions/checkout@v4
       - name: Build partner-data lab image
